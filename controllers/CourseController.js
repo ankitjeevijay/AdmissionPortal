@@ -29,7 +29,8 @@ static BtechFormInsert = async (req, res)=>{
          college: college,
         course: course,
         branch: branch,
-        user_id: _id
+        user_id: _id,
+        
     })
     await insert.save()
     res.redirect('/btechFormDisplay')
