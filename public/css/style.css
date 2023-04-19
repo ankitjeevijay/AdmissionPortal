@@ -308,6 +308,11 @@ ul.footer-list li a:hover i,ul.footer-list li a:hover span{
   }
 
   /*----------- table css-------- */
+  .tableoverflow{
+    overflow: scroll !important;
+  }
+   
+  
   .table{
     width: 100%;
     border-collapse: collapse; /* !important*/
