@@ -45,5 +45,7 @@ router.get('/adminDashboard',Admin_auth, AdminController.DisplayData)
 router.get('/admin/userDisplay', AdminController.UserDisplay)
 router.get('/admin/userFormDisplay',AdminController.userFormDisplay)
 router.get('/admin/formView/:id', AdminController.UerFormView)
+router.get('/changePassword',Admin_auth, AdminController.ChangePassword)
+router.post('/updatepassword/:id',Admin_auth, AdminController.UpdatePassword)
 
 module.exports = router
