@@ -2,6 +2,14 @@ const CourseModel = require('../models/course/Course')
 const UserModel = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+    cloud_name: 'dkwdscz4l', 
+    api_key: '388856688969765', 
+    api_secret: '7S0v5WOk8Yw-0QyIr1HjBj1Wifw',
+   // secure: true
+  });
 
 
 class AdminController{
@@ -42,7 +50,7 @@ static UerFormView = async (req, res)=>{
 static ChangePassword = async (req, res)=>{
     try{
         const {userName, _id, email } = req.user
-        res.render('admin/changePassword',{id:_id,name:userName,message: req.flash('error')})
+        res.render('admin/changePassword',{id:_id,name:userName,message: req.flash('error'),message1: req.flash('success')})
 
     }catch(error){
         console.log(error)
@@ -63,7 +71,7 @@ static UpdatePassword = async (req, res)=>{
                 await UserModel.findByIdAndUpdate(req.params.id,{
                     $set:{password:newHashPassword} 
                 });
-                req.flash('error','Password Updated successfully')
+                req.flash('success','Password Updated successfully')
                     res.redirect('/changePassword')
                
             }else{
@@ -84,6 +92,66 @@ static UpdatePassword = async (req, res)=>{
       console.log(error)  
     }
 }
+static ViewProfile =async (req, res)=>{
+    try{
+        const viewp = await UserModel.findById(req.params.id)
+        res.render('admin/viewProfile',{data:viewp})
+
+    }catch(error){
+        console.log(error)
+    }
+   
+}
+static EditProfile = async (req, res)=>{
+    try{
+        const profile = await UserModel.findById(req.params.id)
+        res.render('admin/editProfile',{data:profile})
+
+    }catch(error){
+        console.log(error)
+    }
+}
+static UpdateProfile = async (req, res) => {
+    try {
+      // console.log(req.body)
+      // console.log(req.params.id)
+      const image = req.files.image;
+      if(image){
+        //first delete the image
+      const userProfile = await UserModel.findById(req.params.id);
+      const imageid = userProfile.image.public_id;
+      // console.log(imageid)
+      await cloudinary.uploader.destroy(imageid);
+
+      //second update iamge
+      const file = req.files.image;     
+        const myimage = await cloudinary.uploader.upload(file.tempFilePath, {
+          folder: "AdmissionPortal",
+        });
+      const result = await UserModel.findByIdAndUpdate(req.params.id, {
+        userName: req.body.userName,
+        email: req.body.email,
+        image: {
+          public_id: myimage.public_id,
+          url: myimage.secure_url
+        },
+      });
+      await result.save();
+      res.redirect("/nolink");
+      }
+      
+    } catch (error) {
+      const result = await UserModel.findByIdAndUpdate(req.params.id, {
+        userName: req.body.userName,
+        email: req.body.email,
+      });
+      await result.save();
+      res.redirect("/nolink");
+    }
+  };
+
+
+
 
 
 
