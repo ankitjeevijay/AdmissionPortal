@@ -22,6 +22,16 @@ static DisplayData = async (req, res)=>{
         console.log(error)
     }
 }
+static Welcome = async (req,res)=>{
+    try{
+        res.render('admin/welcomepage')
+    }catch(error){
+        console.log(error)
+    }
+}
+
+
+
 static UserDisplay = async (req, res)=>{
     try{
         const userdata= await UserModel.find()
@@ -137,7 +147,7 @@ static UpdateProfile = async (req, res) => {
         },
       });
       await result.save();
-      res.redirect("/nolink");
+      res.redirect("/admin/welcom");
       }
       
     } catch (error) {
@@ -146,7 +156,7 @@ static UpdateProfile = async (req, res) => {
         email: req.body.email,
       });
       await result.save();
-      res.redirect("/nolink");
+      res.redirect("/admin/welcom");
     }
   };
 

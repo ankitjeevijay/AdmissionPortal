@@ -16,7 +16,7 @@ cloudinary.config({
 class UserController{
     static Login = (req, res)=>{
         try{
-           res.render('login',{message: req.flash('error')})
+           res.render('login',{message: req.flash('error'),message1: req.flash('success')})
 
         }catch(error){
             console.log(error)
@@ -94,7 +94,7 @@ class UserController{
                             }
                       })
                       await result.save()
-                      req.flash('error','Registration Successfully Please Login Here')
+                      req.flash('success','Registration Successfully Please Login Here')
                       res.redirect('/')
 
                     }else{

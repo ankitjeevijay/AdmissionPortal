@@ -42,6 +42,7 @@ router.post('/mcaFormUpdate/:id',Admin_auth, CourseController.MCAFormUpdate)
 
 // Admin components router
 router.get('/adminDashboard',Admin_auth, AdminController.DisplayData)
+router.get('/admin/welcome', AdminController.Welcome)
 router.get('/admin/userDisplay', AdminController.UserDisplay)
 router.get('/admin/userFormDisplay',AdminController.userFormDisplay)
 router.get('/admin/formView/:id', AdminController.UerFormView)
