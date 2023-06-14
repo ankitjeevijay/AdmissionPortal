@@ -50,7 +50,7 @@ class UserController{
     static Contact = async (req, res)=>{
         try{
             const {userName,image, _id, email } = req.user 
-            res.render('contact',{name:userName, i:image})
+            res.render('contact',{name:userName, i:image, message: req.flash('error'),message1: req.flash('success')})
         }catch(error){
             console.log(error)
         }
@@ -60,15 +60,22 @@ class UserController{
         try{
             // console.log('Thanks for contact')
             const {userName,email,mobileNo,address} = req.body
-            const contactData = await ContactModel({
-                userName:userName,
-                email:email,
-                mobileNo:mobileNo,
-                address:address
-            })
-            await contactData.save()
-            res.redirect('/contact')
+            if(userName && email && mobileNo && address){
+                const contactData = await ContactModel({
+                    userName:userName,
+                    email:email,
+                    mobileNo:mobileNo,
+                    address:address
+                })
+                await contactData.save()
+                req.flash('success','Thank you for Contact Us !')
+                res.redirect('/contact')
+            }else{
+                req.flash('error','All field are requred')
+                res.redirect('/contact')
 
+            }
+           
         }catch(error){
             console.log(error)
         }
