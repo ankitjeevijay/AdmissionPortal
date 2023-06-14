@@ -1,3 +1,4 @@
+const ContactModel = require('../models/contact');
 const CourseModel = require('../models/course/Course')
 const UserModel = require('../models/user')
 const bcrypt = require('bcrypt')
@@ -22,9 +23,10 @@ static DisplayData = async (req, res)=>{
         console.log(error)
     }
 }
-static Welcome = async (req,res)=>{
+static RecentContact = async (req,res)=>{
     try{
-        res.render('admin/welcomepage')
+        const contact = await ContactModel.find()
+        res.render('admin/recentContact',{display:contact})
     }catch(error){
         console.log(error)
     }
@@ -147,7 +149,7 @@ static UpdateProfile = async (req, res) => {
         },
       });
       await result.save();
-      res.redirect("/admin/welcom");
+      res.redirect("/admin/recentContact");
       }
       
     } catch (error) {
@@ -156,7 +158,7 @@ static UpdateProfile = async (req, res) => {
         email: req.body.email,
       });
       await result.save();
-      res.redirect("/admin/welcom");
+      res.redirect("/admin/recentContact");
     }
   };
 

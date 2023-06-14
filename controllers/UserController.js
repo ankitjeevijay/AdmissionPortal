@@ -3,6 +3,7 @@ var cloudinary = require('cloudinary').v2;
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const CourseFormModel = require('../models/course/Course');
+const ContactModel = require('../models/contact');
 
 cloudinary.config({ 
     cloud_name: 'dkwdscz4l', 
@@ -54,6 +55,24 @@ class UserController{
             console.log(error)
         }
        
+    }
+    static ContactInsert = async (req, res)=>{
+        try{
+            // console.log('Thanks for contact')
+            const {userName,email,mobileNo,address} = req.body
+            const contactData = await ContactModel({
+                userName:userName,
+                email:email,
+                mobileNo:mobileNo,
+                address:address
+            })
+            await contactData.save()
+            res.redirect('/contact')
+
+        }catch(error){
+            console.log(error)
+        }
+            
     }
     static Registration = async (req, res)=>{
         try{
@@ -157,11 +176,6 @@ class UserController{
             console.log(error)
         }
     }
-
-
-
-
-
 
     static Logout = async (req, res)=>{
         try{
